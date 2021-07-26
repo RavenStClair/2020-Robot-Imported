@@ -60,18 +60,11 @@ public class FinalShooter {
             ShooterMotorBottom.getPIDController().setReference(bottomvelocity, ControlType.kVelocity);
         }
         double errorShooterRoom = 250;
-        if (OI.shoot == true) {
-            // this shooter runs on a timer that starts different motor at different times
-            // to effectivly shoot without clutter
-            if (ShooterOneEncoder.getVelocity() > bottomvelocity - errorShooterRoom
-                    && ShooterTwoEncoder.getVelocity() > topvelocity - errorShooterRoom) {
-                SpedUp = true;
-                if (delayer.get() < .01) {
-                    delayer.start();
-                }
-            } else {
-                SpedUp = false;
-            }
+        if (OI.Manipulator_Joystick.getRawButton(1) == true) {
+            ShooterMotorBottom.getPIDController().setReference(bottomvelocity, ControlType.kVelocity);
+
+            ShooterMotorTop.getPIDController().setReference(topvelocity, ControlType.kVelocity);
+
         }
         if (delayer.get() > 0) {
         }
@@ -86,16 +79,16 @@ public class FinalShooter {
         if (delayer.get() >= 1 && SpedUp == true) {
             Intake.IntakeHigh.set(ControlMode.PercentOutput, -.5);
         }
-        if (OI.stopShooting) {
+        if (OI.Manipulator_Joystick.getRawButton(2)) {
             // when the trigger is released it stops shooting
             Robot.light.setRaw(0);
-            delayer.stop();
-            delayer.reset();
+            topvelocity = 0;
+            bottomvelocity = 0;
             Intake.Indexer.set(ControlMode.PercentOutput, 0);
             Intake.Soubway.set(ControlMode.PercentOutput, 0);
-            ShooterMotorBottom.set(0);
-            ShooterMotorTop.set(0);
+            
         }
+
         if (OI.quitAll) {
             Intake.Soubway.set(ControlMode.PercentOutput, 0);
             Intake.Indexer.set(ControlMode.PercentOutput, 0);
@@ -104,12 +97,12 @@ public class FinalShooter {
             ShooterMotorBottom.set(0);
             ShooterMotorTop.set(0);
         }
-
-        if (OI.beltRev == true) {
+        
+        if (OI.Manipulator_Joystick.getRawButton(5) == true) {
             // turns the belt and indexer forwards
             Intake.Soubway.set(ControlMode.PercentOutput, .5);
             Intake.Indexer.set(ControlMode.PercentOutput, .3);
-        } else if (OI.beltFWD) {
+        } else if (OI.Manipulator_Joystick.getRawButton(3)) {
             // turns the belt and indexer backwards
             Intake.Soubway.set(ControlMode.PercentOutput, -.5);
             Intake.Indexer.set(ControlMode.PercentOutput, -.3);
@@ -119,17 +112,20 @@ public class FinalShooter {
             Intake.Soubway.set(ControlMode.PercentOutput, 0);
             Intake.Indexer.set(ControlMode.PercentOutput, 0);
         }
-        if (OI.longRange) {
+        if (OI.Manipulator_Joystick.getRawButtonPressed(12)) {
             //button to set shooter speeds to long range
-            LongRange();
+            bottomvelocity = 5000;
+            topvelocity = 3500;
         }
-        if (OI.midRange) {
+        if (OI.Manipulator_Joystick.getRawButtonPressed(10)) {
             // button to set shooter speeds to mid range
-            MidRange();
+            bottomvelocity = 4000;
+            topvelocity = 2500;
         }
-        if (OI.shortRange) {
+        if (OI.Manipulator_Joystick.getRawButtonPressed(8)) {
             // button to set shooter speeds to short range
-            ShortRange();
+            bottomvelocity = 3000;
+            topvelocity = 1500;
         }
         if (OI.lightsOn) {
             Robot.light.setRaw(-200);
