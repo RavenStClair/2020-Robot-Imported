@@ -66,19 +66,7 @@ public class FinalShooter {
             ShooterMotorTop.getPIDController().setReference(topvelocity, ControlType.kVelocity);
 
         }
-        if (delayer.get() > 0) {
-        }
-        if (delayer.get() >= .3 && SpedUp == true) {
-            Intake.Indexer.set(ControlMode.PercentOutput, -.3);
-        }
-        if (delayer.get() >= .5 && SpedUp == true) {
-
-            Intake.Soubway.set(ControlMode.PercentOutput, -.5);
-        }
-
-        if (delayer.get() >= 1 && SpedUp == true) {
-            Intake.IntakeHigh.set(ControlMode.PercentOutput, -.5);
-        }
+    
         if (OI.Manipulator_Joystick.getRawButton(2)) {
             // when the trigger is released it stops shooting
             Robot.light.setRaw(0);
