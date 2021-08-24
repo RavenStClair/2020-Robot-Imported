@@ -11,20 +11,20 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * Add your docs here.
  */
 public class Climber {
-    public static VictorSPX fishingPole = new VictorSPX(18);
+    public static CANSparkMax fishingPole = new CANSparkMax(18, MotorType.kBrushed);
     public static VictorSPX ClimberS = new VictorSPX(RobotMap.CLIMBER_S_ID);
     public static VictorSPX ClimberF = new VictorSPX(RobotMap.CLIMBER_F_ID);
 
     public static Boolean failSafe = true; // failsafe int
     public static boolean climberButton = false;
     static int ShooterSwitchButtons;
-
 
     static final double MAX_CURRENT = 30;
 
@@ -46,20 +46,20 @@ public class Climber {
             ClimberS.set(ControlMode.PercentOutput, 0);
         }
         if (OI.Manipulator_Joystick.getRawButton(11) == true) {
-            //Safety Lock
+            // Safety Lock
             climberButton = true;
         } else {
             climberButton = false;
         }
-        if (OI.Manipulator_Joystick.getRawButton(3) && climberButton == true) {
-            //Hook Down
-            fishingPole.set(ControlMode.PercentOutput, 1);
-        } else if (OI.Manipulator_Joystick.getRawButton(5) && climberButton == true) {
-            //Hook up
-            fishingPole.set(ControlMode.PercentOutput, -1);
-        } else if (OI.Manipulator_Joystick.getRawButton(3) == false && OI.Manipulator_Joystick.getRawButton(5) == false
+        if (OI.Manipulator_Joystick.getRawButton(9)) {
+            // Hook Down
+            fishingPole.set(0.7);
+        } else if (OI.Manipulator_Joystick.getRawButton(7)) {
+            // Hook up
+            fishingPole.set(-0.7);
+        } else if (OI.Manipulator_Joystick.getRawButton(9) == false && OI.Manipulator_Joystick.getRawButton(11) == false
                 && OI.Manipulator_Joystick.getRawButton(1) == false) {
-            fishingPole.set(ControlMode.PercentOutput, 0);
+            fishingPole.set(0);
         }
 
     }

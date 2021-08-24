@@ -13,6 +13,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -34,11 +35,7 @@ public class FinalShooter {
     public static int unjamInt = 0;
     public static boolean SpedUp = false;
 
-    public static void FinalSHTInit() {
-        // initialize
-        delayer.stop();
-        delayer.reset();
-    }
+    
 
     public static void trauma() {
         // double FF = 0;
@@ -59,6 +56,11 @@ public class FinalShooter {
             ShooterMotorTop.getPIDController().setReference(topvelocity, ControlType.kVelocity);
             ShooterMotorBottom.getPIDController().setReference(bottomvelocity, ControlType.kVelocity);
         }
+        if (OI.Manipulator_Joystick.getPOV() == 270) {
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2);
+        } else if (OI.Manipulator_Joystick.getPOV() == 90) {
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
+        }
         double errorShooterRoom = 250;
         if (OI.Manipulator_Joystick.getRawButton(1) == true) {
             ShooterMotorBottom.getPIDController().setReference(bottomvelocity, ControlType.kVelocity);
@@ -72,6 +74,8 @@ public class FinalShooter {
             Robot.light.setRaw(0);
             topvelocity = 0;
             bottomvelocity = 0;
+            ShooterMotorTop.getPIDController().setReference(topvelocity, ControlType.kVelocity);
+            ShooterMotorBottom.getPIDController().setReference(bottomvelocity, ControlType.kVelocity);
             Intake.Indexer.set(ControlMode.PercentOutput, 0);
             Intake.Soubway.set(ControlMode.PercentOutput, 0);
             
@@ -88,8 +92,8 @@ public class FinalShooter {
         
         if (OI.Manipulator_Joystick.getRawButton(5) == true) {
             // turns the belt and indexer forwards
-            Intake.Soubway.set(ControlMode.PercentOutput, .5);
-            Intake.Indexer.set(ControlMode.PercentOutput, .3);
+            Intake.Soubway.set(ControlMode.PercentOutput, .6);
+            Intake.Indexer.set(ControlMode.PercentOutput, .5);
         } else if (OI.Manipulator_Joystick.getRawButton(3)) {
             // turns the belt and indexer backwards
             Intake.Soubway.set(ControlMode.PercentOutput, -.5);

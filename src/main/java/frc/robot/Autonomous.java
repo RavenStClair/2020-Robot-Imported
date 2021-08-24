@@ -226,8 +226,8 @@ public class Autonomous {
                 // 5PIDShooter(Robot.kP, 0, 0, Robot.kFF, RobotMap.topvelocity,
                 // RobotMap.bottomvelocity);
                 MovePID(position);
-                if (Math.abs(Drive_Train.RightMotorEncoder.getPosition()) > 49
-                        && Math.abs(Drive_Train.LeftMotorEncoder.getPosition()) > 49) {
+                if (Math.abs(Drive_Train.RightMotorEncoder.getPosition()) > position - 5
+                        && Math.abs(Drive_Train.LeftMotorEncoder.getPosition()) > position - 5) {
 
                     routineTracker++;
 

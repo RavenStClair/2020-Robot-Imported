@@ -44,11 +44,11 @@ public class Robot extends TimedRobot {
   /*UsbCamera camera1 = new UsbCamera("front?", 1);
   UsbCamera camera2;*/
   UsbCamera camera1;
-  UsbCamera camera2;
+  
   
   boolean circle = false;
   boolean insane = false;
-  NetworkTableEntry cameraSelection;
+  
   //VideoSink server;
   boolean ZUC = true;
   boolean buttonimp = false;
@@ -62,9 +62,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //start dual camera (OUTDATED. USE LIMELIGHT)
-    camera1 = CameraServer.getInstance().startAutomaticCapture(1);
-    camera2 = CameraServer.getInstance().startAutomaticCapture(0);
-    cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
     FinalShooter.MidRange();
     SmartDashboard.putNumber("P", FinalShooter.kP);
     
@@ -78,7 +75,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    FinalShooter.FinalSHTInit();
 
     FinalShooter.shuteInit();
     Drive_Train.DriveAndrew();
@@ -93,19 +89,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("set bottom", FinalShooter.bottomvelocity);
 
     Intake.runIntake();
-    Limelight.Target();
+    //Limelight.Target();
     Drive_Train.drive();
     FinalShooter.trauma();
     Climber.Climb();
-    //OUTDATED CAMERA CODE. Delete when updated with LimeLight.
-    if (OI.Right_Joystick.getRawButtonPressed(7)) {
-      System.out.println("Setting camera 2");
-      cameraSelection.setString(camera2.getName());
-  } else if (OI.Right_Joystick.getRawButtonReleased(7)) {
-      System.out.println("Setting camera 1");
-      cameraSelection.setString(camera1.getName());
+    
+
+
   }
-  }
+  
 
 
   @Override
